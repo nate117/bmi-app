@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>My bmi app</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>  
+<style>
+body{
+  margin: 0;
+  
+}
+form{
+  background-color: blue; 
+  color: white; 
+  height: 500px; 
+  width: 350px; 
+  margin: auto;      
+}  
+@media only screen and (max-width: 600px) {
+  form {
+    width: 100%;
+  }
+}
+#inputarea{
+  background-color: red; 
+  height: 30%;  
+  width: 100%; 
+    text-align: center;
+}    
+.flexcontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#numberarea{
+  background-color: blue; 
+  height: 50%; 
+  width: 100%;
+    overflow-x: auto;
+}
+#number{
+  margin: 0; 
+  font-size: 80px; 
+  text-align: center;
+    
+}
+#result{
+    transition: all 1s; 
+    background-color: blue; 
+    height: 20%; 
+    width: 100%
+}
+#colorbar{
+    overflow: hidden;
+    white-space: nowrap;
+    transition: all 1s;
+    height: 100%; 
+    width: 0px;
+}
+#healthresult{
+  margin: 0;        
+}
+input[type=text], input[type=number], select {
+border: 2px solid black;
+border-radius: 4px;
+}
+.circlebutton {
+  background-color: gray;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  border-radius: 50%;    
+}    
+</style>    
+<body>
+
+<h2>BMI APP</h2>
+<div  >
+<form>
+  <div id="inputarea">
+    <label>Choose your height:</label>
+  <br>
+  <select type="number" id="feet" name="heightft">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+  </select>
+  <select type="number" id="inch" name="heightinch">
+    <option value="0">0</option>  
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+    <option value="10">10</option>
+    <option value="11">11</option>  
+  </select>
+  <br>
+  <br>
+    <label>Enter your weight</label>
+    <br>
+  <input id="weight" type="number" name="pounds"  min="1" max="5">
+      <br>
+  <input id="mybutton" class="circlebutton" type="button" value="Submit">
+</div>
+    <div id="numberarea" class="flexcontainer">
+        <div>
+            <p id="number"></p>
+        </div>    
+    </div>
+    <div id="result">
+        <div id="colorbar" class="flexcontainer" >
+            <div >
+                <p id="healthresult" ></p>
+            </div>    
+        </div>    
+    </div>
+    
+</form>
+    </div>
+
+
+<script>
+
+//calculates the bmi 
+function calculateBmi() {
+  var pounds = document.getElementById("weight").value;
+  var kg = pounds / 2.205; //convert pounds to kilograms
+  console.log(pounds);
+    
+  var foot = document.getElementById("feet").value;
+  var inch = document.getElementById("inch").value;
+    console.log(foot);
+  var height = (12 * foot) + parseInt(inch);
+    console.log(inch);
+    console.log(height);
+  var meter = height / 39.37;
+    console.log(meter);
+  var result = kg / (meter * meter);
+    console.log(result);
+  document.getElementById("number").innerHTML = result.toFixed(1);
+
+    
+    document.getElementById("colorbar").style.width = "0px";
+    if(result < 18.5){
+       setTimeout(underResult, 1000);
+    }
+    else if(result < 25.0){   
+       setTimeout(goodResult, 1000);
+    }
+    else if(result < 30.0){
+       setTimeout(midResult, 1000);    
+    }
+    else{
+        setTimeout(badResult, 1000);
+    }
+    
+    
+    
+  
+}    
+//changes css for the results area for a low bmi    
+function underResult(){
+    document.getElementById("colorbar").style.transition = "all 1s";
+       document.getElementById("colorbar").style.backgroundColor = "goldenrod";
+      document.getElementById("colorbar").style.width = "100%";
+    document.getElementById("healthresult").innerHTML = "A BMI under 18.5 is considered underweight";
+}
+//changes css for the results area for a healthy bmi
+function goodResult(){
+    document.getElementById("colorbar").style.transition = "all 1s";
+       document.getElementById("colorbar").style.backgroundColor = "green";
+      document.getElementById("colorbar").style.width = "100%";
+    document.getElementById("healthresult").innerHTML = "A BMI between 18.5-24.9 is a normal weight.";
+}
+    //changes css for the results area for a overweight bmi
+function midResult(){
+    document.getElementById("colorbar").style.transition = "all 1s";
+       document.getElementById("colorbar").style.backgroundColor = "goldenrod";
+      document.getElementById("colorbar").style.width = "100%";
+    document.getElementById("healthresult").innerHTML = "A BMI between 25.0-29.9 is overweight";
+} 
+//changes css for the results area for obesity bmi   
+function badResult(){
+    document.getElementById("colorbar").style.transition = "all 1s";
+        document.getElementById("colorbar").style.backgroundColor = "red";
+        document.getElementById("colorbar").style.width = "100%";
+    document.getElementById("healthresult").innerHTML = "A BMI of 30.0 and above is considered obesity";
+}
+//event listener for submit button to initiate calculation    
+document.getElementById("mybutton").addEventListener("click", function(){calculateBmi();});    
+</script>
+
+</body>
+</html>
